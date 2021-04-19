@@ -12,6 +12,7 @@ import os
 
 def resposta(driver, escolha):
     
+    diretorio = "flavi"
 
     if escolha == "1":
 
@@ -54,56 +55,64 @@ if __name__ == "__main__":
 
     nome =str('{:02d}'.format(x.year)) + "-" + str('{:02d}'.format(x.month)) + "-" + str(x.day)
     ultima_mensagem = ""
-    j = open("C:\\Users\\Cliente\\Downloads\\" + nome + ".txt", "r", encoding="utf-8")
-    numeros = j.read()
-
-    matriz_numeros =  numeros.split("\n")
+    
+    
+    escolha = "9"
 
     while escolha != "0":
 
         escolha = input("Digite -1 para mensagens de ontem, 1 para mensagens de amanhã ou 0 para terminar:")
+        
+        if escolha != "0":
 
-        for n in matriz_numeros:
+            j = open("C:\\Users\\" + diretorio + "\\Downloads\\" + nome + ".txt", "r", encoding="utf-8")
+            numeros = j.read()
 
-            if n != '':
+            matriz_numeros =  numeros.split("\n")
+
+            for n in matriz_numeros:
+
+                if n != '':
 
 
-                #n = n.replace("550","55")
-                driver.get("https://wa.me/" + n.replace("+",""))
-                time.sleep(1)
-                
-                try:
-                    el = WebDriverWait(driver, timeout=2).until(lambda d: d.find_element(By.CSS_SELECTOR, '#action-button'))
-                    
-                    el.click()
-                except:
-
-                    time.sleep(2)
+                    #n = n.replace("550","55")
                     driver.get("https://wa.me/" + n.replace("+",""))
                     time.sleep(1)
-                    el = WebDriverWait(driver, timeout=2).until(lambda d: d.find_element(By.CSS_SELECTOR, '#action-button'))
                     
-                    el.click()
+                    try:
+                        el = WebDriverWait(driver, timeout=2).until(lambda d: d.find_element(By.CSS_SELECTOR, '#action-button'))
+                        
+                        el.click()
+                    except:
 
-                time.sleep(1)
-                el2 = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#fallback_block > div > div > a'))
-                el2.click()
+                        time.sleep(2)
+                        driver.get("https://wa.me/" + n.replace("+",""))
+                        time.sleep(1)
+                        el = WebDriverWait(driver, timeout=2).until(lambda d: d.find_element(By.CSS_SELECTOR, '#action-button'))
+                        
+                        el.click()
 
-                try:
-                    msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
-                except:
+                    time.sleep(1)
+                    el2 = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#fallback_block > div > div > a'))
+                    el2.click()
 
+                    try:
+                        msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
+                    except:
+                        msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
+                    
 
-                    if len(driver.find_elements(By.CSS_SELECTOR, "._3SRfO"))>0:
+                        if len(driver.find_elements(By.CSS_SELECTOR, "._3SRfO"))>0:
 
-                        print("Não foi possível enviar mensagem para o número " + n + " devido a: " + driver.find_element(By.CSS_SELECTOR, "._3SRfO").text)
+                            print("Não foi possível enviar mensagem para o número " + n + " devido a: " + driver.find_element(By.CSS_SELECTOR, "._3SRfO").text)
 
-                        continue
+                            continue
 
-                
-                mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
-                resposta(driver, escolha)
-                print(n.replace("+",""))
+                    
+                    mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
+                    resposta(driver, escolha)
+                    print(n.replace("+",""))
 
-        j.close()
-        os.remove("C:\\Users\\Cliente\\Downloads\\" + nome + ".txt")
+            j.close()
+            os.remove("C:\\Users\\flavi\\Downloads\\" + nome + ".txt")
+            matriz_numeros.clear()
