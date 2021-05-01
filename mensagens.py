@@ -12,7 +12,7 @@ import os
 
 def resposta(driver, escolha):
     
-    diretorio = "flavi"
+    
 
     if escolha == "1":
 
@@ -45,6 +45,8 @@ def resposta(driver, escolha):
 
 
 if __name__ == "__main__":
+
+    diretorio = "Cliente"
 
     driver = webdriver.Chrome(executable_path=r'chromedriver.exe')
 
@@ -99,8 +101,7 @@ if __name__ == "__main__":
                     try:
                         msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
                     except:
-                        msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
-                    
+                        
 
                         if len(driver.find_elements(By.CSS_SELECTOR, "._3SRfO"))>0:
 
@@ -108,11 +109,15 @@ if __name__ == "__main__":
 
                             continue
 
-                    
-                    mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
+                    try:
+                        mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
+                    except:
+                        msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
+                        mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
+                        
                     resposta(driver, escolha)
                     print(n.replace("+",""))
 
             j.close()
-            os.remove("C:\\Users\\flavi\\Downloads\\" + nome + ".txt")
+            os.remove("C:\\Users\\"+ diretorio + "\\Downloads\\" + nome + ".txt")
             matriz_numeros.clear()

@@ -162,7 +162,13 @@ def switch_demo(argument):
         \\r\
         \\r\
         Atenciosamente,""",
-        '9': "",
+        'só preciso passar um recado importante:': """Este número só funciona em horário comercial e na maior parte do tempo é respondido por um bot, assim utilize os números que vou te passar para chamar sua van no momento do desembarque ou para atendimento imediato.\\r\
+        \\r\
+        (31) 3-665-7777\\r\
+        \\r\
+        (31) 9-8473-1607\\r\
+        \\r\
+        (31) 9-8478-6316""",
         '10': "",
         '11': "",
         '12': ""
