@@ -36,7 +36,7 @@ def resposta(driver,a):
    
 def msg_foi(a):
     retorno = bool(False)
-    msg2 = driver.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]')
+    msg2 = driver.find_element(By.CSS_SELECTOR, '#main div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]')
     mensagens2 = msg2.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
     quantas_mensagens2 = len(mensagens2)
     ultima_msg = mensagens2[quantas_mensagens2-1].text
@@ -47,7 +47,7 @@ def msg_foi(a):
     return retorno
 
 def limpa_espaco(a):
-    r = ["\\n", "\\r","\n", "\r", "\\"]
+    r = ["\\n", "\\r","\n", "\r", "\\", "*", "```","_"]
 
     for i in r:
         a = a.replace(i, "")
@@ -57,17 +57,26 @@ def limpa_espaco(a):
 
 def send_keys2(driver, keys: str):
     #função que escreve o texto (send_keys estava enviando mensagens com caracteres faltando)
-    q_caixaTexto = "#main > footer > div.vR1LG._3wXwX.copyable-area > div._2A8P4"
-    q_caixaTexto2 = "#main > footer > div.vR1LG._3wXwX.copyable-area > div._2A8P4 > div"
-    q_caixaTexto3 = "#main > footer > div.vR1LG._3wXwX.copyable-area > div._2A8P4 > div > div._2_1wd.copyable-text.selectable-text"
-    q_verifica = "#main > footer > div.vR1LG._3wXwX.copyable-area > div._2A8P4 > div > div._2_1wd.copyable-text.selectable-text"
-    q_botaoClica = "#main > footer > div.vR1LG._3wXwX.copyable-area > div:nth-child(3) > button"
+    q_caixaTexto = "#main > footer > div._2BU3P.tm2tP.copyable-area > div > span:nth-child(2) > div > div._2lMWa"
+    q_caixaTexto2 = "#main > footer > div._2BU3P.tm2tP.copyable-area > div > span:nth-child(2) > div > div._2lMWa > div.p3_M1 > div"
+    q_caixaTexto3 = "#main > footer > div._2BU3P.tm2tP.copyable-area > div > span:nth-child(2) > div > div._2lMWa > div.p3_M1"
+    q_verifica = "#main > footer > div._2BU3P.tm2tP.copyable-area > div > span:nth-child(2) > div > div._2lMWa > div.p3_M1 > div > div._13NKt.copyable-text.selectable-text" 
+    q_verifica = "#main > footer > div._2BU3P.tm2tP.copyable-area > div > span:nth-child(2) > div > div._2lMWa > div.p3_M1"        
+    q_botaoClica = "#main > footer > div._2BU3P.tm2tP.copyable-area > div > span:nth-child(2) > div > div._2lMWa > div._3HQNh._1Ae7k > button"
 
-    driver.execute_script('document.querySelector("' + q_verifica + '").innerText = "' + keys + '";')
+    #driver.execute_script('document.querySelector("' + q_verifica + '").innerText = "' + keys + '";')
 
     driver.find_element(By.CSS_SELECTOR, q_caixaTexto3).send_keys("1")
     time.sleep(1)
     driver.find_element(By.CSS_SELECTOR, q_caixaTexto3).send_keys(Keys.BACKSPACE)
+    time.sleep(1)
+
+    for parte in keys.split("\\r"):
+
+        driver.find_element(By.CSS_SELECTOR, q_caixaTexto3).send_keys(parte)
+        driver.find_element(By.CSS_SELECTOR, q_caixaTexto3).send_keys(Keys.SHIFT+Keys.ENTER)
+
+    #driver.find_element(By.CSS_SELECTOR, q_caixaTexto3).send_keys(keys)
 
     if len(driver.find_elements(By.CSS_SELECTOR, q_botaoClica))==1:
 
@@ -104,17 +113,15 @@ def switch_demo(argument):
     switcher = {
         '1': f"""Nossas diárias são as seguintes:\\r\
         \\r\
-        R$ 13,9 - vaga descoberta;\\r\
-        R$ 20,9 - vaga coberta.\\r\
+        R$ 15,9 - vaga descoberta;\\r\
+        R$ 23,9 - vaga coberta.\\r\
         \\r\
         Ressalto que as horas adicionais são cobradas da seguinte forma:\\r\
         \\r\
         primeira hora - R$ 3,5 (vaga descoberta) /R$ 4 (vaga coberta)\\r\
         demais horas - R$ 2,5 (vaga descoberta) /R$ 3 (vaga coberta)\\r\
         \\r\
-        Os clientes que permanecem por 7 ou mais dias conosco, fazem jus a promoção de semana, pagando uma diária de *R$ 14* para vaga coberta e *R$ 12* para descoberta.\\r\
-        \\r\
-        Caso você fique, por exemplo, 6 dias e 23 horas, não será contemplado pela promoção da semana, e dessa forma os valores serão R$ 146,30 para vaga coberta e R$ 97,30 para descoberta.\\r\
+        Os clientes que permanecem por 7 ou mais dias conosco, fazem jus a promoção de semana, pagando uma diária de *R$ 16,36* para vaga coberta e *R$ 14* para descoberta.\\r\
         \\r\
         Faça uma simulação do provável valor da sua estadia, colocando a hora de entrada e de saída estimada no site: https://estacionamentopatioconfins.com.br/wp/reservas/.\\r\
         Estamos muito próximos ao aeroporto, cerca de 4 km. Visite nosso site e veja: https://estacionamentopatioconfins.com.br/estacionamento-proximo-ao-aeroporto-de-confins/\\r\
@@ -137,6 +144,19 @@ def switch_demo(argument):
         \\r\
         sac@estacionamentopatioconfins.com.br""",
         '5': "Nossos transportes, são gratuitos, funcionam 24 horas e saem imediatamente após a chegada dos nossos clientes. Recomendamos chegar em nosso estacionamento 15 minutos antes do horário pretendido de estar no aeroporto (diferente de horário do voo), pois nossos veículos podem estar ocupados no momento da sua chegada. No seu retorno, você nos liga e te buscamos na sua área de desembarque. O trajeto do estacionamento ao aeroporto não leva mais que 5 minutos.",
+        '6':f"""Aceitamos pagamento antecipado por pix. Funciona assim:\\r\
+            \\r\
+            1. *Faça o pix no valor informado para o CNPJ*\\r\
+            *_25.042.876/0001-21_*\\r\
+            \\r\
+            2. *Envie o comprovante para esse número*\\r\
+            \\r\
+            Pronto!!\\r\
+            \\r\
+            \\r\
+            ```Caso o carro``` *saia antes de 48 horas* ```do término da estadia, devolveremos proporcionalmente o valor pago.```\\r\
+            \\r\
+            ```Caso você permaneça``` *além de 24 horas* ```do término da estadia, será cobrado o período adicional.```""",
         'sim': f"""Estamos cerca de 4 minutos, ou 3 km, do Aeroporto de Confins.\\r\
             \\r\
         A maneira mais fácil de chegar ao nosso estacionamento é procurando por “Estacionamento Pátio Confins” no Waze ou Google Maps.\\r\
@@ -169,9 +189,32 @@ def switch_demo(argument):
         (31) 9-8473-1607\\r\
         \\r\
         (31) 9-8478-6316""",
-        '10': "",
-        '11': "",
-        '12': ""
+        'em relação aos pagamentos': f"Aceitamos todos os principais cartões de crédito, débito e dinheiro. O pagamento é feito somente no final do período, pois para cobrança é levada em consideração sua efetiva hora de saída. Os valores a pagar mostrados no momento da sua reserva são estimados.",
+        'eu preciso que você me informe:': f"""Seu nome,\\r\
+    Seu e-mail,\\r\
+    Modelo do veículo, \\r\
+    Placa do veículo.""",
+        'peço gentilmente que': f"""Após a retirada das malas, avise sua chegada nos seguintes números.  Esse número é para reservas. Não falo do estacionamento.\\r\
+        \\r\
+        Entre em contato com um dos seguintes números:\\r\
+        \\r\
+        (31) 3-665-7777\\r\
+        \\r\
+        (31) 9-8473-1607\\r\
+        \\r\
+        (31) 9-8478-6316""",
+        '13': f"""oi \n
+        tudo bem \n
+        """,
+        '14': """oi 
+        tudo bem 
+        """,
+        '15': f"""oi 
+        tudo bem 
+        """,
+        '16': r"""oi 
+        tudo bem 
+        """
     }
     return switcher.get(argument, "")
 
@@ -196,7 +239,7 @@ if __name__ == "__main__":
             #são feitas  2 verifiicações: 1) se há mensagens novas no painel principal e 2) se já notificações no painel esquerdo
             #1
             if not (passagem):
-                msg = driver.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]')
+                msg = driver.find_element(By.CSS_SELECTOR, '#main div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]')
                 mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
 
                 quantas_mensagens = len(mensagens)
@@ -208,9 +251,9 @@ if __name__ == "__main__":
             
 
             #notificação de nova mensagem e clica
-            driver.find_element(By.CSS_SELECTOR, '._38M1B').click()
+            driver.find_element(By.CSS_SELECTOR, '._1pJ9J').click()
             #lista todas as mensagens da nova notificação e procura pela última
-            msg = driver.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]')
+            msg = driver.find_element(By.CSS_SELECTOR, '#main div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]')
             mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
 
             quantas_mensagens = len(mensagens)

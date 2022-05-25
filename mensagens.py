@@ -99,20 +99,20 @@ if __name__ == "__main__":
                     el2.click()
 
                     try:
-                        msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
+                        msg = WebDriverWait(driver, timeout=10).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
                     except:
                         
 
-                        if len(driver.find_elements(By.CSS_SELECTOR, "._3SRfO"))>0:
+                        if len(driver.find_elements(By.CSS_SELECTOR, "._3J6wB"))>0:
 
-                            print("Não foi possível enviar mensagem para o número " + n + " devido a: " + driver.find_element(By.CSS_SELECTOR, "._3SRfO").text)
+                            print("Não foi possível enviar mensagem para o número " + n + " devido a: " + driver.find_element(By.CSS_SELECTOR, "._3J6wB").text)
 
                             continue
 
                     try:
                         mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
                     except:
-                        msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main ._2wjK5 div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
+                        msg = WebDriverWait(driver, timeout=4).until(lambda d: d.find_element(By.CSS_SELECTOR, '#main div[aria-label="Lista de mensagens. Pressione a seta para direita em uma mensagem para abrir o menu da mensagem."]'))
                         mensagens = msg.find_elements(By.CSS_SELECTOR, 'span.copyable-text')
                         
                     resposta(driver, escolha)
